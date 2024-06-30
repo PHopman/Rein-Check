@@ -44,7 +44,9 @@ class ConsoleViewController: UIViewController {
   }
 
   @objc func appendRxDataToTextView(notification: Notification) -> Void{
-    consoleTextView.text.append("\n[Recv]: \(notification.object!) \n")
+    consoleTextView.text.append("[Recv]: \(notification.object!) \n")
+      let range = NSMakeRange(consoleTextView.text.count - 1, 0)
+      consoleTextView.scrollRangeToVisible(range)
   }
 
   func appendTxDataToTextView(){
