@@ -28,13 +28,13 @@
       
       @IBOutlet weak var scanningLabel: UILabel!
       @IBOutlet weak var scanningButton: UIButton!
-      @IBOutlet weak var startButton: UIButton!
+      @IBOutlet weak var connectButton: UIButton!
       
       @IBAction func scanningAction(_ sender: Any) {
-      startScanning()
-    }
+        startScanning()
+      }
 
-      @IBAction func startAction(_ sender: Any) {
+      @IBAction func connectAction(_ sender: Any) {
           connectToDevice()
       }
       
@@ -47,12 +47,17 @@
         self.tableView.reloadData()
         // Manager
         centralManager = CBCentralManager(delegate: self, queue: nil)
-        startButton.isHidden = true
+        selectedPeripheralArray.removeAll()
+        peripheralSelectedLabel.text = "Devices Found: ..."
+        connectButton.isHidden = true
       }
 
       override func viewDidAppear(_ animated: Bool) {
         disconnectFromDevice()
         self.tableView.reloadData()
+        selectedPeripheralArray.removeAll()
+        peripheralSelectedLabel.text = "Devices Found: ..."
+        connectButton.isHidden = true
         //startScanning()
       }
 
@@ -64,7 +69,7 @@
       func disconnectFromDevice() -> Void {
         if bluefruitPeripheral != nil {
           centralManager?.cancelPeripheralConnection(bluefruitPeripheral!)
-          startButton.isHidden = true
+          connectButton.isHidden = true
         }
     }
 
@@ -330,7 +335,7 @@
           //BlePeripheral.connectedPeripheral = bluefruitPeripheral
           selectedPeripheralArray.append(bluefruitPeripheral)
           peripheralSelectedLabel.text = "Devices Found: \(selectedPeripheralArray.count)"
-          startButton.isHidden = false
+          connectButton.isHidden = false
           //connectToDevice()
       }
   }

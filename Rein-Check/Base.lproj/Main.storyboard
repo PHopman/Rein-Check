@@ -127,12 +127,12 @@
                                     <action selector="scanningAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xL1-C4-dos"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jgl-Gs-0LU" userLabel="Start Button">
-                                <rect key="frame" x="235.5" y="226" width="62" height="35"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="gray" title="Start"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jgl-Gs-0LU" userLabel="Connect Button">
+                                <rect key="frame" x="235.5" y="226" width="59" height="30"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Connect"/>
                                 <connections>
-                                    <action selector="startAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JRb-ET-evE"/>
+                                    <action selector="connectAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZE3-fo-UQS"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -159,11 +159,11 @@
                     </view>
                     <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="Zzz-7U-QEe"/>
                     <connections>
+                        <outlet property="connectButton" destination="jgl-Gs-0LU" id="jc0-g0-dff"/>
                         <outlet property="peripheralFoundLabel" destination="Yva-ye-IbR" id="tgW-If-vma"/>
                         <outlet property="peripheralSelectedLabel" destination="JcM-sg-CGn" id="yVz-C2-NZj"/>
                         <outlet property="scanningButton" destination="mWF-kO-Gxc" id="W2D-RX-Wsj"/>
                         <outlet property="scanningLabel" destination="f5I-eO-Wmy" id="2qZ-ue-SHr"/>
-                        <outlet property="startButton" destination="jgl-Gs-0LU" id="5EQ-bX-8i4"/>
                         <outlet property="tableView" destination="5Ud-Yr-D9H" id="MQg-TN-ifU"/>
                     </connections>
                 </viewController>
