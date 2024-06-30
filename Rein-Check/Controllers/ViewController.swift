@@ -16,19 +16,29 @@
       private var txCharacteristic: CBCharacteristic!
       private var rxCharacteristic: CBCharacteristic!
       private var peripheralArray: [CBPeripheral] = []
+      private var selectedPeripheralArray: [CBPeripheral] = []
       private var rssiArray = [NSNumber]()
       private var timer = Timer()
 
       // UI
       @IBOutlet weak var tableView: UITableView!
       @IBOutlet weak var peripheralFoundLabel: UILabel!
+      @IBOutlet weak var peripheralSelectedLabel: UILabel!
+      
+      
       @IBOutlet weak var scanningLabel: UILabel!
       @IBOutlet weak var scanningButton: UIButton!
-
+      @IBOutlet weak var startButton: UIButton!
+      
       @IBAction func scanningAction(_ sender: Any) {
       startScanning()
     }
 
+      @IBAction func startAction(_ sender: Any) {
+          connectToDevice()
+      }
+      
+      
       override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -37,6 +47,7 @@
         self.tableView.reloadData()
         // Manager
         centralManager = CBCentralManager(delegate: self, queue: nil)
+        startButton.isHidden = true
       }
 
       override func viewDidAppear(_ animated: Bool) {
@@ -46,12 +57,14 @@
       }
 
       func connectToDevice() -> Void {
-        centralManager?.connect(bluefruitPeripheral!, options: nil)
+        BlePeripheral.connectedPeripheral = selectedPeripheralArray[0]
+        centralManager?.connect(BlePeripheral.connectedPeripheral!, options: nil)
     }
 
       func disconnectFromDevice() -> Void {
         if bluefruitPeripheral != nil {
           centralManager?.cancelPeripheralConnection(bluefruitPeripheral!)
+          startButton.isHidden = true
         }
     }
 
@@ -59,11 +72,13 @@
         centralManager.cancelPeripheralConnection(bluefruitPeripheral)
              rssiArray.removeAll()
              peripheralArray.removeAll()
+             selectedPeripheralArray.removeAll()
          }
 
       func startScanning() -> Void {
           // Remove prior data
           peripheralArray.removeAll()
+          selectedPeripheralArray.removeAll()
           rssiArray.removeAll()
           // Start Scanning
           centralManager?.scanForPeripherals(withServices: [CBUUIDs.BLEService_UUID])
@@ -77,6 +92,7 @@
       func scanForBLEDevices() -> Void {
         // Remove prior data
         peripheralArray.removeAll()
+        selectedPeripheralArray.removeAll()
         rssiArray.removeAll()
         // Start Scanning
         centralManager?.scanForPeripherals(withServices: [] , options: [CBCentralManagerScanOptionAllowDuplicatesKey:true])
@@ -100,9 +116,9 @@
 
       func delayedConnection() -> Void {
 
-      BlePeripheral.connectedPeripheral = bluefruitPeripheral
+        BlePeripheral.connectedPeripheral = bluefruitPeripheral
 
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
         //Once connected, move to new view controller to manager incoming and outgoing data
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
@@ -220,7 +236,8 @@
           print("TX Characteristic: \(txCharacteristic.uuid)")
         }
       }
-      delayedConnection()
+        delayedConnection()
+
    }
 
 
@@ -310,10 +327,11 @@
 
         bluefruitPeripheral = peripheralArray[indexPath.row]
 
-          BlePeripheral.connectedPeripheral = bluefruitPeripheral
-
-          connectToDevice()
-
+          //BlePeripheral.connectedPeripheral = bluefruitPeripheral
+          selectedPeripheralArray.append(bluefruitPeripheral)
+          peripheralSelectedLabel.text = "Devices Found: \(selectedPeripheralArray.count)"
+          startButton.isHidden = false
+          //connectToDevice()
       }
   }
 
